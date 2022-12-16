@@ -1,0 +1,83 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Logic/Paddle.cs" type="Script" id=1]
+[ext_resource path="res://paddle.png" type="Texture" id=2]
+[ext_resource path="res://Warning.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Spawner.cs" type="Script" id=4]
+[ext_resource path="res://separator.png" type="Texture" id=6]
+[ext_resource path="res://Logic/Wall.cs" type="Script" id=7]
+[ext_resource path="res://Logic/CeilingFloor.cs" type="Script" id=8]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 4, 16 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 10, 200 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 320, 10 )
+
+[node name="Pong" type="Node2D"]
+
+[node name="Background" type="ColorRect" parent="."]
+margin_right = 640.0
+margin_bottom = 400.0
+color = Color( 0.141176, 0.152941, 0.164706, 1 )
+
+[node name="player" type="Area2D" parent="."]
+modulate = Color( 0, 1, 1, 1 )
+position = Vector2( 67.6285, 192.594 )
+scale = Vector2( 3, 1 )
+script = ExtResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="player"]
+texture = ExtResource( 2 )
+
+[node name="Collision" type="CollisionShape2D" parent="player"]
+shape = SubResource( 1 )
+
+[node name="Separator" type="Sprite" parent="."]
+visible = false
+position = Vector2( 320, 200 )
+texture = ExtResource( 6 )
+
+[node name="walls" type="Node2D" parent="."]
+
+[node name="LeftWall" type="Area2D" parent="walls"]
+position = Vector2( -10, 200 )
+script = ExtResource( 7 )
+
+[node name="Collision" type="CollisionShape2D" parent="walls/LeftWall"]
+shape = SubResource( 3 )
+
+[node name="RightWall" type="Area2D" parent="walls"]
+position = Vector2( 650, 200 )
+script = ExtResource( 7 )
+
+[node name="Collision" type="CollisionShape2D" parent="walls/RightWall"]
+shape = SubResource( 3 )
+
+[node name="Ceiling" type="Area2D" parent="walls"]
+position = Vector2( 320, -10 )
+script = ExtResource( 8 )
+
+[node name="Collision" type="CollisionShape2D" parent="walls/Ceiling"]
+shape = SubResource( 4 )
+
+[node name="Floor" type="Area2D" parent="walls"]
+position = Vector2( 320, 410 )
+script = ExtResource( 8 )
+_bounceDirection = -1
+
+[node name="Collision" type="CollisionShape2D" parent="walls/Floor"]
+shape = SubResource( 4 )
+
+[node name="Spawner" type="Node2D" parent="."]
+script = ExtResource( 4 )
+SceneToInstantiate = ExtResource( 3 )
+
+[connection signal="area_entered" from="player" to="player" method="OnAreaEntered"]
+[connection signal="area_entered" from="walls/LeftWall" to="walls/LeftWall" method="OnWallAreaEntered"]
+[connection signal="area_entered" from="walls/RightWall" to="walls/RightWall" method="OnWallAreaEntered"]
+[connection signal="area_entered" from="walls/Ceiling" to="walls/Ceiling" method="OnAreaEntered"]
+[connection signal="area_entered" from="walls/Floor" to="walls/Floor" method="OnAreaEntered"]

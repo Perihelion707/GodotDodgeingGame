@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://separator.png" type="Texture" id=1]
+[ext_resource path="res://Warning.cs" type="Script" id=2]
+[ext_resource path="res://Lazer.tscn" type="PackedScene" id=3]
+
+[node name="Warning" type="Sprite"]
+texture = ExtResource( 1 )
+script = ExtResource( 2 )
+childScene = ExtResource( 3 )
